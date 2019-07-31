@@ -21,11 +21,7 @@ cards.forEach(function(card, index){
         titulo.addEventListener('click', function(){
             this.remove();
         });
-
         popup.appendChild(titulo);
-
-        card.appendChild(titulo);
-
         
     });
 });
