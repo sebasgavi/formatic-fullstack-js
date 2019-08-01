@@ -9,76 +9,27 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    
-    <style>
-        .card{
-            background: gray;
-        }
-        img{
-            border: 2px red solid;
-        }
-        #titulo{
-            color: orange;
-        }
-
-        .popup{
-            background: rgba(0,0,0,.5);
-            color: white;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            z-index: 1000;
-        }
-    </style>
-    
 </head>
 
 <body>
 
-    <div class="popup" hidden></div>
+  <div class="container">
+    <div class="row justify-content-center pt-4">
+      <div class="col-4">
 
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-4">
+        <main class="card" id="app">
+          <div class="card-body">
+            <header class="form-group">
+              <label>Nueva Tarea</label>
+              <input type="text" class="form-control w-100" placeholder="Escribe la siguiente tarea">
+            </header>
+            <section class="list-group"></section>
+          </div>
+        </main>
 
-                <div class="card" data-titulo="hola">
-                    <img src="https://www.royalcanin.es/wp-content/uploads/2016/08/el-juego-gato.jpg" class="card-img-top" alt="">
-                    <div class="card-body">
-                        <h5 class="card-title" id="titulo">Ser o no Ser</h5>
-                        <p class="card-text">Lorem, ipsum dolor sit amet consectetur.</p>
-                        <a href="#" class="btn btn-primary">Abrir</a>
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-4">
-
-                <div class="card" data-titulo="como" data-texto="el texto">
-                    <img src="https://www.royalcanin.es/wp-content/uploads/2016/08/el-juego-gato.jpg" class="card-img-top" alt="">
-                    <div class="card-body">
-                        <h5 class="card-title" id="titulo">Ser o no Ser</h5>
-                        <p class="card-text">Lorem, ipsum dolor sit amet consectetur.</p>
-                        <a href="#" class="btn btn-primary">Abrir</a>
-                    </div>
-                </div>
-
-            </div>
-            <div class="col-4">
-
-                <div class="card" data-titulo="estás">
-                    <img src="https://www.royalcanin.es/wp-content/uploads/2016/08/el-juego-gato.jpg" class="card-img-top" alt="">
-                    <div class="card-body">
-                        <h5 class="card-title" id="titulo">Ser o no Ser</h5>
-                        <p class="card-text">Lorem, ipsum dolor sit amet consectetur.</p>
-                        <a href="#" class="btn btn-primary">Abrir</a>
-                    </div>
-                </div>
-
-            </div>
-        </div>
+      </div>
     </div>
-
-    <input type="string">
+  </div>
 
     <script src="./main.js"></script>
 </body>
