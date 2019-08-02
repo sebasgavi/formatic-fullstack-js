@@ -64,6 +64,7 @@ window.addEventListener('load', () => {
     app.querySelector('footer a').addEventListener('click', deleteCompleted);
 
     // TODO: completar o descompletar todos los elementos con un botón
+    // TODO: guardar y replicar estado de la aplicación usando localStorage
   }
 
   // cuando el usuario oprime enter crea el nuevo elemento
