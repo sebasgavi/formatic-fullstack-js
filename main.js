@@ -1,13 +1,20 @@
 window.addEventListener('load', () => {
 
+  // arreglo de elementos
   var elements = [];
-  var elementsFiltered = [ ...elements ];
+  // filtro actual
   var filter = false;
+
+  // render inicial de la aplicación
   render();
 
   function render(){
+    // calcular elementos restantes
     const itemsLeft = elements.reduce((prev, { checked }) => !checked ? prev + 1 : prev, 0);
+    // calcular elementos completados
+    const itemsCompleted = elements.length - itemsLeft;
 
+    // seleccionar #app y setear contenido
     const app = document.querySelector('#app');
     app.innerHTML = `
       <div class="card-body">
@@ -18,13 +25,14 @@ window.addEventListener('load', () => {
 
         <section class="list-group mt-4" ${elements.length > 0 ? '' : 'hidden'}></section>
 
-        <footer class="mt-4 justify-content-between ${elements.length > 0 ? 'd-flex' : 'd-none'}">
-          <div>${itemsLeft} elemento${itemsLeft === 1 ? '' : 's'} restante${itemsLeft === 1 ? '' : 's'}</div>
+        <footer class="mt-4 justify-content-between align-items-center ${elements.length > 0 ? 'd-flex' : 'd-none'}">
+          <small>${itemsLeft} elemento${itemsLeft === 1 ? '' : 's'} restante${itemsLeft === 1 ? '' : 's'}</small>
           <div class="filters">
             <button class="btn btn-sm btn-outline-secondary">Todos</button>
             <button class="btn btn-sm btn-outline-secondary">Completados</button>
             <button class="btn btn-sm btn-outline-secondary">Restantes</button>
           </div>
+          <a href="#" ${itemsCompleted > 0 ? '' : 'hidden'}>Borrar completados</a>
         </footer>
       </div>
     `;
@@ -37,7 +45,7 @@ window.addEventListener('load', () => {
     input.addEventListener('keydown', handleInput);
 
     // filtrar lista
-    elementsFiltered = elements.filter(({ checked }) => {
+    var elementsFiltered = elements.filter(({ checked }) => {
       switch(filter){
         case 'completed': return checked;
         case 'uncompleted': return !checked;
@@ -51,8 +59,14 @@ window.addEventListener('load', () => {
 
     // setear filters
     setFilters(...app.querySelectorAll('.filters .btn'));
+
+    // botón borrar completados
+    app.querySelector('footer a').addEventListener('click', deleteCompleted);
+
+    // TODO: completar o descompletar todos los elementos con un botón
   }
 
+  // cuando el usuario oprime enter crea el nuevo elemento
   function handleInput({ keyCode, target: { value } }) {
     if(keyCode === 13 && value){
       elements.push({
@@ -63,6 +77,13 @@ window.addEventListener('load', () => {
     }
   }
 
+  // eliminar todos los elementos completados
+  function deleteCompleted(){
+    elements = elements.filter(({ checked }) => !checked);
+    render();
+  }
+
+  // setear la variable filter
   function setFilters(all, completed, uncompleted) {
     all.addEventListener('click', () => {
       filter = false;
@@ -78,6 +99,7 @@ window.addEventListener('load', () => {
     });
   }
 
+  // crear un elemento tarea
   function getTask(elem, index) {
     const { text, checked } = elem;
     var item = document.createElement('div');
@@ -91,14 +113,30 @@ window.addEventListener('load', () => {
         <span>&times;</span>
       </button>
     `;
+    // reaccionar al click del checkbox
     item.querySelector('input').addEventListener('click', (e) => {
       elem.checked = e.target.checked;
       render();
     });
+    // eliminar el elemento al dar click en el botón de la x
     item.querySelector('.close').addEventListener('click', (e) => {
       elements.splice(index, 1);
       render();
     });
+    // seleccionar label
+    var label = item.querySelector('label');
+    // hacer el label editable al hacer doble click
+    label.addEventListener('dblclick', (e) => {
+      label.setAttribute('contenteditable', true);
+    });
+    // setear el nuevo contenido al oprimir enter
+    label.addEventListener('keydown', (e) => {
+      if(e.keyCode === 13){
+        elem.text = label.innerText;
+        render();
+      }
+    });
+    // retornar el elemento
     return item;
   }
 
