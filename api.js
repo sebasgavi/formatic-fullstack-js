@@ -21,6 +21,20 @@ window.addEventListener('load', () => {
                 .then(response => {
                     return response.json();
                 });
+        },
+
+        voteImage: (imageId, vote) => {
+            var body = {
+                image_id: imageId,
+                value: vote
+            };
+            return fetch(`${base}votes`, {
+                method: 'POST',
+                body: JSON.stringify(body),
+                headers:{
+                    'Content-Type': 'application/json'
+                }
+            })
         }
     }
 

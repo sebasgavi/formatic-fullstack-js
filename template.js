@@ -26,7 +26,7 @@ window.addEventListener('load', () => {
     window.getCatElement = getCatElement;
 
 
-    window.getCatModal = function ({ name, description }, callback) {
+    window.getCatModal = function ({ name, description }, voteUp, voteDown, callback) {
         var parent = this.document.createElement('div');
         parent.innerHTML = `
             <div class="modal close-cat" style="display:block">
@@ -43,7 +43,8 @@ window.addEventListener('load', () => {
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary close-cat" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-danger">No me gusta</button>
+                        <button type="button" class="btn btn-success">Me gusta</button>
                     </div>
                     </div>
                 </div>
@@ -59,35 +60,49 @@ window.addEventListener('load', () => {
         }
         document.body.classList.toggle('modal-open', true);
 
-        callback((carousel) => {
+        parent.querySelector('.btn-danger').addEventListener('click', voteDown);
+        parent.querySelector('.btn-success').addEventListener('click', voteUp);
+
+        var addCarousel = (carousel) => {
             parent.querySelector('.modal-body').append(carousel);
-        });
+        };
+
+        callback(addCarousel);
 
         return parent;
     }
 
 
     window.getCatCarousel = function(images){
+        var id = 'carousel'+Date.now();
         var carousel = this.document.createElement('div');
         carousel.setAttribute('class', 'carousel slide');
         carousel.setAttribute('data-ride', 'carousel');
+        carousel.setAttribute('id', id);
         carousel.innerHTML = `
             <div class="carousel-inner">
-                ${images.map(({ url }) => `
-                    <div class="carousel-item active">
+                ${images.map(({ url, id }, i) => `
+                    <div class="carousel-item ${i === 0 ? 'active' : ''}" data-id="${id}">
                         <img src="${url}" class="d-block w-100" alt="...">
                     </div>
                 `).join('')}
             </div>
-            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+            <a class="carousel-control-prev" href="#${id}" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="sr-only">Previous</span>
             </a>
-            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+            <a class="carousel-control-next" href="#${id}" role="button" data-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="sr-only">Next</span>
             </a>
         `;
+
+        $(carousel).carousel();
+
+        carousel.getActiveId = function() {
+            return carousel.querySelector('.carousel-item.active').getAttribute('data-id');
+        }
+
         return carousel;
     }
 

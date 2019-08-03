@@ -21,10 +21,20 @@ window.addEventListener('load', () => {
     }
 
     function openCatModal(obj){
-        var modal = getCatModal(obj, (addCarousel) => {
+        var carousel;
+
+        function voteUp() {
+            api.voteImage(carousel.getActiveId(), 1);
+        }
+
+        function voteDown() {
+            api.voteImage(carousel.getActiveId(), 0);
+        }
+
+        var modal = getCatModal(obj, voteUp, voteDown, (addCarousel) => {
             api.getImages(obj.id)
                 .then(images => {
-                    var carousel = getCatCarousel(images);
+                    carousel = getCatCarousel(images);
                     addCarousel(carousel);
                 });
         });
