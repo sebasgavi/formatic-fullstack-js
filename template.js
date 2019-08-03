@@ -26,7 +26,7 @@ window.addEventListener('load', () => {
     window.getCatElement = getCatElement;
 
 
-    window.getCatModal = function ({ name, description }) {
+    window.getCatModal = function ({ name, description }, callback) {
         var parent = this.document.createElement('div');
         parent.innerHTML = `
             <div class="modal close-cat" style="display:block">
@@ -58,6 +58,11 @@ window.addEventListener('load', () => {
             }
         }
         document.body.classList.toggle('modal-open', true);
+
+        callback((carousel) => {
+            parent.querySelector('.modal-body').append(carousel);
+        });
+
         return parent;
     }
 

@@ -21,14 +21,14 @@ window.addEventListener('load', () => {
     }
 
     function openCatModal(obj){
-        var modal = getCatModal(obj);
+        var modal = getCatModal(obj, (addCarousel) => {
+            api.getImages(obj.id)
+                .then(images => {
+                    var carousel = getCatCarousel(images);
+                    addCarousel(carousel);
+                });
+        });
         document.body.append(modal);
-        
-        api.getImages(obj.id)
-            .then(images => {
-                var carousel = getCatCarousel(images);
-                modal.querySelector('.modal-body').append(carousel);
-            });
     }
 
 });
