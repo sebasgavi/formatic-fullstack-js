@@ -1,16 +1,21 @@
 window.addEventListener('load', () => {
 
   // arreglo de elementos
-  var elements = [];
+  var elements = JSON.parse(localStorage.getItem('elements') || '[]');
   // filtro actual
-  var filter = false;
+  var filter = localStorage.getItem('filter') || false;
+
+  var timeMachine = [];
+  window.timeMachine = timeMachine;
+
+  var itemsLeft;
 
   // render inicial de la aplicación
   render();
 
   function render(){
     // calcular elementos restantes
-    const itemsLeft = elements.reduce((prev, { checked }) => !checked ? prev + 1 : prev, 0);
+    itemsLeft = elements.reduce((prev, { checked }) => !checked ? prev + 1 : prev, 0);
     // calcular elementos completados
     const itemsCompleted = elements.length - itemsLeft;
 
@@ -19,7 +24,7 @@ window.addEventListener('load', () => {
     app.innerHTML = `
       <div class="card-body">
         <header class="form-group mb-0">
-          <label>Nueva Tarea</label>
+          <label>Nueva Tarea</label> <button ${elements.length > 0 ? '' : 'hidden'}>${itemsLeft === 0 ? 'Restaurar' : 'Completar'} todos</button>
           <input type="text" class="form-control w-100" placeholder="Escribe la siguiente tarea">
         </header>
 
@@ -63,8 +68,38 @@ window.addEventListener('load', () => {
     // botón borrar completados
     app.querySelector('footer a').addEventListener('click', deleteCompleted);
 
-    // TODO: completar o descompletar todos los elementos con un botón
-    // TODO: guardar y replicar estado de la aplicación usando localStorage
+    // acción botón completar todos
+    app.querySelector('button').addEventListener('click', completeAll);
+
+    // guardar datos en localStorage
+    localStorage.setItem('elements', JSON.stringify(elements));
+    localStorage.setItem('filter', filter);
+
+    timeMachine.push({
+        elements: [ ...elements ],
+        filter
+    });
+  }
+
+  window.addEventListener('keydown', ({ key, ctrlKey }) => {
+    if(key === 'z' && ctrlKey){
+        var [ snap ] = timeMachine.splice(-2, 2);
+        elements = snap.elements;
+        filter = snap.filter;
+        render();
+    }
+  });
+
+  function completeAll(){
+      elements.forEach(element => {
+          if(itemsLeft === 0){
+            element.checked = false;
+          } else {
+            element.checked = true;
+          }
+          //element.checked = itemsLeft !== 0;
+      });
+      render();
   }
 
   // cuando el usuario oprime enter crea el nuevo elemento
@@ -107,7 +142,7 @@ window.addEventListener('load', () => {
     item.setAttribute('class', 'list-group-item');
     item.innerHTML = `
       <input type="checkbox" ${checked ? 'checked' : ''} />
-      <label>
+      <label style="text-decoration: ${checked ? 'line-through' : 'none'}">
         ${text}
       </label>
       <button class="close text-danger">
@@ -115,7 +150,8 @@ window.addEventListener('load', () => {
       </button>
     `;
     // reaccionar al click del checkbox
-    item.querySelector('input').addEventListener('click', (e) => {
+    var input = item.querySelector('input')
+    input.addEventListener('click', (e) => {
       elem.checked = e.target.checked;
       render();
     });
@@ -136,6 +172,10 @@ window.addEventListener('load', () => {
         elem.text = label.innerText;
         render();
       }
+    });
+    label.addEventListener('blur', (e) => {
+        elem.text = label.innerText;
+        render();
     });
     // retornar el elemento
     return item;
