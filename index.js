@@ -38,8 +38,8 @@ app.get('/tienda', function (req, res) {
 });
 
 app.get('/product/:id', (req, res) => {
-  console.log(req.params);
-  res.send('hgadas');
+  var context = products[req.params.id];
+  res.render('product', context);
 });
 
 app.get('/api/otro', (req, res) => {
