@@ -1,0 +1,20 @@
+
+    Email: test@test.com
+    Mensaje: otro mensaje
+  
+    Email: test@test.com
+    Mensaje: el tercer mensaje
+    ---------
+  
+    Email: test@test.com
+    Mensaje: dasdasdas
+    ---------
+  
+    Email: test@test.com
+    Mensaje: el mensaje a email
+    ---------
+  
+    Email: test@test.com
+    Mensaje: asdasdasd
+    ---------
+  

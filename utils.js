@@ -11,6 +11,10 @@ function getMenu(path) {
     {
       url: '/tienda',
       title: 'Tienda'
+    },
+    {
+        url: '/contact',
+        title: 'Contact'
     }
   ];
   menu = menu.map(item => {

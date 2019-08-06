@@ -6,7 +6,8 @@
   "dependencies": {
     "express": "^4.17.1",
     "express-handlebars": "^3.1.0",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "sendmail": "^1.6.1"
   },
   "devDependencies": {},
   "scripts": {
