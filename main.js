@@ -1,5 +1,5 @@
 window.addEventListener('load', () => {
-
+ 
   // arreglo de elementos
   var elements = JSON.parse(localStorage.getItem('elements') || '[]');
   // filtro actual
