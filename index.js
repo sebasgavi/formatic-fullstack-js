@@ -1,6 +1,8 @@
 var express = require('express');
 var exphbs = require('express-handlebars');
 
+var { getMenu } = require('./utils');
+
 var app = express();
 
 // configuramos el nuevo motor de render handlebars
@@ -9,21 +11,11 @@ app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 
 app.get('/', function (req, res) {
+  console.log(req.path);
   let context = {
     title: 'Home desde contexto',
     description: 'description desde contexto',
-    menu: [
-      {
-        url: '/',
-        title: 'Home',
-        active: true,
-      },
-      {
-        url: '/about',
-        title: 'About',
-        active: false,
-      }
-    ]
+    menu: getMenu(req.path),
   };
   res.render('home', context);
 });
@@ -32,18 +24,7 @@ app.get('/about', function (req, res) {
   let context = {
     title: 'About desde contexto',
     description: 'description desde contexto',
-    menu: [
-      {
-        url: '/',
-        title: 'Home',
-        active: false,
-      },
-      {
-        url: '/about',
-        title: 'About',
-        active: true,
-      }
-    ]
+    menu: getMenu(req.path),
   };
   res.render('home', context);
 });
