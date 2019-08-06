@@ -9,8 +9,8 @@ function getMenu(path) {
       title: 'About',
     },
     {
-      url: '/contact',
-      title: 'Contact'
+      url: '/tienda',
+      title: 'Tienda'
     }
   ];
   menu = menu.map(item => {

@@ -2,6 +2,7 @@ var express = require('express');
 var exphbs = require('express-handlebars');
 
 var { getMenu } = require('./utils');
+var products = require('./products');
 
 var app = express();
 
@@ -27,6 +28,18 @@ app.get('/about', function (req, res) {
     menu: getMenu(req.path),
   };
   res.render('home', context);
+});
+
+app.get('/tienda', function (req, res) {
+  let context = {
+    products: products
+  };
+  res.render('tienda', context);
+});
+
+app.get('/product/:id', (req, res) => {
+  console.log(req.params);
+  res.send('hgadas');
 });
 
 app.get('/api/otro', (req, res) => {
