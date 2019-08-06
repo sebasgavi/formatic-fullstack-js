@@ -5,6 +5,7 @@ var sendmail = require('sendmail')();
 
 var { getMenu } = require('./utils');
 var products = require('./products');
+var todos = [];
 
 var app = express();
 
@@ -82,12 +83,39 @@ app.post('/contact', (req, res) => {
   });
 });
 
-app.get('/api/otro', (req, res) => {
-    res.json([
-        {name: 'Sebas'},
-        {name: 'Andrés'},
-        {name: 'Sofía'}
-    ])
+app.get('/todo', (req, res) => {
+  res.render('todo');
+});
+
+app.get('/api/task', (req, res) => {
+  res.json({
+    message: 'ok',
+    todos: todos,
+  });
+});
+
+app.post('/api/task', (req, res) => {
+  var task = {
+    text: req.body.text,
+    checked: false,
+  };
+  todos.push(task);
+  console.log(todos);
+  res.json({
+    message: 'ok',
+  });
+});
+
+app.put('/api/task/:id', (req, res) => {
+  console.log(req.body);
+  todos[req.params.id] = {
+    ...todos[req.params.id],
+    ...req.body,
+    checked: req.body.checked === 'true',
+  };
+  res.json({
+    message: `task actualizada: ${req.params.id}`
+  });
 });
 
 app.listen(3000, function () {

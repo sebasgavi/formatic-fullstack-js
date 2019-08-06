@@ -1,9 +1,18 @@
 window.addEventListener('load', () => {
  
   // arreglo de elementos
-  var elements = JSON.parse(localStorage.getItem('elements') || '[]');
+  //var elements = JSON.parse(localStorage.getItem('elements') || '[]');
   // filtro actual
-  var filter = localStorage.getItem('filter') || false;
+  //var filter = localStorage.getItem('filter') || false;
+  var elements = [];
+  var filter = false;
+
+  fetch('/api/task')
+    .then(res => res.json())
+    .then(({ message, todos }) => {
+      elements = todos;
+      render();
+    });
 
   var timeMachine = [];
   window.timeMachine = timeMachine;
@@ -109,6 +118,18 @@ window.addEventListener('load', () => {
         text: value,
         checked: false,
       });
+
+      var body = new URLSearchParams();
+      body.append('text', value);
+      fetch('/api/task', {
+        method: 'POST',
+        body: body,
+      })
+      .then(res => res.json())
+      .then(res => {
+        console.log(res);
+      });
+
       render();
     }
   }
@@ -153,6 +174,18 @@ window.addEventListener('load', () => {
     var input = item.querySelector('input')
     input.addEventListener('click', (e) => {
       elem.checked = e.target.checked;
+
+      var body = new URLSearchParams();
+      body.append('checked', elem.checked);
+      fetch(`/api/task/${index}`, {
+        method: 'PUT',
+        body: body,
+      })
+      .then(res => res.json())
+      .then(res => {
+        console.log(res);
+      });
+
       render();
     });
     // eliminar el elemento al dar click en el botón de la x

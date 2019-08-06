@@ -15,6 +15,10 @@ function getMenu(path) {
     {
         url: '/contact',
         title: 'Contact'
+    },
+    {
+      url: '/todo',
+      title: 'ToDo',
     }
   ];
   menu = menu.map(item => {
