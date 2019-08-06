@@ -8,6 +8,8 @@ var products = require('./products');
 
 var app = express();
 
+app.use(express.static('public'));
+
 // configuramos el nuevo motor de render handlebars
 app.engine('handlebars', exphbs());
 // le decimos que use handlebars
